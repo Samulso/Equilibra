@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+    <html lang="pt-br">
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="../styles/register.css">
+    
+
+<body>
+        <div class="container">
+            <div class="logo">
+                <img src="../assets/img/logo.jpg">
+            </div>
+
+            <div class="form-card">
+                <h1>Cadastro</h1>
+                <form id="register-form">
+                    <div class="input-group">
+
+                        <label for="name">Nome completo:</label>
+                        <input type="text" id="name" required placeholder="Digite nome">
+
+                        <label for="email">E-mail:</label>
+                        <input type="email" id="email" name="email" required placeholder="Digite email">
+
+                        <label for="password">Senha:</label>
+                        <input type="password" id="password" name="password" required placeholder="Digite sua senha">
+
+                        <label for="confimarsenha">Confimar senha:</label>
+                        <input type="password" id="confirm-password" name="confirm-password" required placeholder="Confimar senha">
+                    
+                    </div>
+
+                    <button type="submit" class="btn">Próximo</button>
+                    <p class="login-true">
+                        <span>Já possui conta? </span> <a href="../pages/login.html">Clique aqui para fazer login</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+        <script src="../js/register.js"></script>
+    </body>
+</html>
