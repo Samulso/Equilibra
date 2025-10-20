@@ -38,4 +38,4 @@ const diasContainer = document.getElementById("dias");
 
   esquerda.addEventListener("click", () => {
     diasContainer.scrollBy({ left: -200, behavior: "smooth" });
-  });
+  }); 
