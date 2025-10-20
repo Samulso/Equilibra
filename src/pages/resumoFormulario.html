@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo do Formulário</title>
+    <link rel="stylesheet" href="../styles/resumoFormulario.css">
+</head>
+
+<body>
+    <div class="document-container">
+        <img src="../assets/img/logo.jpg" alt="">
+        <h1 class="title">Relatório Nutricional</h1>
+        <p class="document-date"></p>
+
+        <section class="document-section">
+            <h2>Informações Pessoais</h2>
+            <div class="info-item">
+                <span class="label">Data de nascimento:</span>
+                <span id="resumo-dataNascimento" class="value"></span>
+            </div>
+            <div class="info-item">
+                <span class="label">Gênero:</span>
+                <span id="resumo-genero" class="value"></span>
+            </div>
+            <div class="info-item">
+                <span class="label">Profissão:</span>
+                <span id="resumo-profissao" class="value"></span>
+            </div>
+        </section>
+
+        <section class="document-section">
+            <h2>Hábitos e Estilo de Vida</h2>
+            <div class="info-item">
+                <span class="label">Nível de atividade física:</span>
+                <span id="resumo-nivelAtividadeFisica" class="value"></span>
+            </div>
+            <div class="info-item">
+                <span class="label">Qualidade do sono:</span>
+                <span id="resumo-qualidadeSono" class="value"></span>
+            </div>
+            <div class="info-item">
+                <span class="label">Quantas refeições faz por dia:</span>
+                <span id="resumo-refeicoesDia" class="value"></span>
+            </div>
+            <div class="info-item">
+                <span class="label">Lanches ou beliscos fora das refeições:</span>
+                <span id="resumo-lanches" class="value"></span>
+            </div>
+            <div class="info-item">
+                <span class="label">Consumo de água (copos por dia):</span>
+                <span id="resumo-consumoAgua" class="value"></span>
+            </div>
+            <div class="info-item">
+                <span class="label">Costuma pular refeições:</span>
+                <span id="resumo-pulaRefeicoes" class="value"></span>
+            </div>
+        </section>
+        
+        <section class="document-section">
+            <h2>Informações Alimentares</h2>
+            <div class="info-item-block">
+                <span class="label">Preferências alimentares:</span>
+                <p id="resumo-preferenciasAlimentares" class="value-block"></p>
+            </div>
+            <div class="info-item-block">
+                <span class="label">Aversões ou restrições:</span>
+                <p id="resumo-restricoes" class="value-block"></p>
+            </div>
+            <div class="info-item-block">
+                <span class="label">Frequência de consumo de:</span>
+                <p id="resumo-frequenciaConsumo" class="value-block"></p>
+            </div>
+        </section>
+        
+        <section class="document-section">
+            <h2>Histórico de Saúde</h2>
+            <div class="info-item-block">
+                <span class="label">Doença diagnosticada:</span>
+                <p id="resumo-doencaDiagnosticada" class="value-block"></p>
+            </div>
+            <div class="info-item-block">
+                <span class="label">Medicamento contínuo:</span>
+                <p id="resumo-medicamento" class="value-block"></p>
+            </div>
+            <div class="info-item-block">
+                <span class="label">Uso de suplementos ou vitaminas:</span>
+                <p id="resumo-suplementos" class="value-block"></p>
+            </div>
+            <div class="info-item-block">
+                <span class="label">Digestão:</span>
+                <p id="resumo-digestao" class="value-block"></p>
+            </div>
+            <div class="info-item-block">
+                <span class="label">Queixas gerais:</span>
+                <p id="resumo-queixasGerais" class="value-block"></p>
+            </div>
+        </section>
+
+        <section class="document-section">
+            <h2>Objetivo</h2>
+            <div class="info-item-block">
+                <span class="label">Objetivo principal:</span>
+                <p id="resumo-objetivoPrincipal" class="value-block"></p>
+            </div>
+        </section>
+    </div>
+
+    <script src="../js/resumo.js"></script>
+</body>
+
+</html>

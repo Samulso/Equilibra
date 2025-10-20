@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   loadComponent("header[id^='header-']", "../components/header.html");
+  loadComponent("header[id^='header-']", "../components/header_nutri.html");
   
 });
 

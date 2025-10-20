@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="../styles/formularioDiagnostico.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="../assets/img/logo.jpg" alt="Logo">
+        </div>
+
+        <div class="form-card">
+            <h1>...</h1>
+            <form id="diagnostic-form">
+                <!-- LINHA 1 -->
+                <div class="row-group">
+                    <div class="input-group">
+                        <label for="born-date">Data de nascimento:</label>
+                        <input type="date" id="born-date" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="genero">Gênero:</label>
+                        <select name="genero" id="genero">
+                            <option value="">Selecione...</option>
+                            <option value="masculino">Masculino</option>
+                            <option value="feminino">Feminino</option>
+                            <option value="nao_binario">Não binário</option>
+                            <option value="prefiro_nao_dizer">Prefiro não dizer</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- LINHA 2 -->
+                <div class="row-group">
+                    <div class="input-group">
+                        <label for="profession">Profissão:</label>
+                        <input type="text" id="profession" name="profession" placeholder="Digite sua profissão">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="physical-activity">Nível de atividade física:</label>
+                        <select name="physical-activity" id="physical-activity">
+                            <option value="">Selecione...</option>
+                            <option value="sedentario">Sedentário</option>
+                            <option value="moderado">Moderado</option>
+                            <option value="ativo">Ativo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- LINHA 3 -->
+                <div class="row-group">
+                    <div class="input-group">
+                        <label for="sleep-quality">Qualidade do sono:</label>
+                        <select name="sleep-quality" id="sleep-quality">
+                            <option value="">Selecione...</option>
+                            <option value="boa">Boa</option>
+                            <option value="media">Média</option>
+                            <option value="ruim">Ruim</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="meals-per-day">Quantas refeições faz por dia?</label>
+                        <input type="number" id="meals-per-day" name="meals-per-day" min="0" placeholder="Ex: 3">
+                    </div>
+                </div>
+
+                <!-- LINHA 4 -->
+                <div class="row-group">
+                    <div class="input-group">
+                        <label for="snacks-outside-meals">Lanches ou beliscos fora das refeições?</label>
+                        <input type="text" id="snacks-outside-meals" name="snacks-outside-meals" placeholder="Ex: Sim, à tarde">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="water-intake">Consumo de água (copos por dia):</label>
+                        <input type="number" id="water-intake" name="water-intake" min="0" placeholder="Ex: 8">
+                    </div>
+                </div>
+                
+                <!-- LINHA 5 -->
+                <div class="row-group">
+                    <div class="input-group">
+                        <label for="skip-meals">Costuma pular refeições?</label>
+                        <select name="skip-meals" id="skip-meals">
+                            <option value="">Selecione...</option>
+                            <option value="sim">Sim</option>
+                            <option value="nao">Não</option>
+                        </select>
+                    </div>
+                    <!-- Adicione outro input-group aqui se desejar, para ocupar o espaço -->
+                    <div class="input-group">
+                        <!-- Campo vazio ou outro campo -->
+                    </div>
+                </div>
+
+                <!-- LINHA COM CAMPOS DE TEXTO ÚNICOS -->
+                <div class="input-group">
+                    <label for="food-preferences">Preferências alimentares (ex: gosta de frutas? verduras? doces?):</label>
+                    <textarea id="food-preferences" name="food-preferences" rows="3" placeholder="Digite aqui..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="food-restrictions">Aversões ou restrições (ex: não come peixe, intolerância à lactose):</label>
+                    <textarea id="food-restrictions" name="food-restrictions" rows="3" placeholder="Digite aqui..."></textarea>
+                </div>
+                
+                <div class="input-group">
+                    <label for="diagnosed-disease">Tem alguma doença diagnosticada? (ex: diabetes, hipertensão)</label>
+                    <textarea id="diagnosed-disease" name="diagnosed-disease" rows="3" placeholder="Digite aqui..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="medication">Usa algum medicamento contínuo?</label>
+                    <textarea id="medication" name="medication" rows="3" placeholder="Digite aqui..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="supplements">Faz uso de suplementos ou vitaminas?</label>
+                    <textarea id="supplements" name="supplements" rows="3" placeholder="Digite aqui..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="digestion">Como é sua digestão (prisão de ventre, azia, gases etc.)?</label>
+                    <textarea id="digestion" name="digestion" rows="3" placeholder="Digite aqui..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="general-complaints">Queixas gerais (cansaço, falta de energia, sono ruim, etc.):</label>
+                    <textarea id="general-complaints" name="general-complaints" rows="3" placeholder="Digite aqui..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="main-goal">Qual é o seu objetivo principal? (emagrecer, ganhar massa, melhorar energia etc.)</label>
+                    <textarea id="main-goal" name="main-goal" rows="3" placeholder="Digite aqui..."></textarea>
+                </div>
+
+                <!-- LINHA COM CHECKBOXES -->
+                <div class="input-group">
+                    <label for="frequent-consumption">Frequência de consumo de:</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="refrigerantes" name="frequent-consumption" value="refrigerantes">
+                        <label for="refrigerantes">Refrigerantes</label>
+                        <input type="checkbox" id="frituras" name="frequent-consumption" value="frituras">
+                        <label for="frituras">Frituras</label>
+                        <input type="checkbox" id="doces" name="frequent-consumption" value="doces">
+                        <label for="doces">Doces</label>
+                        <input type="checkbox" id="ultraprocessados" name="frequent-consumption" value="ultraprocessados">
+                        <label for="ultraprocessados">Ultraprocessados</label>
+                    </div>
+                </div>
+            </form>
+            <button type="button" id="submit-btn" class="btn">Próximo</button>
+        </div>
+    </div>
+    <script src="../js/diagnostico_formulario.js"></script>
+</body>
+
+</html>

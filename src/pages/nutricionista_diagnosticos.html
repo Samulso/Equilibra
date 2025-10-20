@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnósticos - Nutricionista</title>
+    <link rel="stylesheet" href="../styles/nutricionista_diagnosticos.css">
+    <script src="../js/all.js"></script>
+</head>
+
+<body>
+    <header id="header-landing-afterLogin_nutri"></header>
+
+    <main class="nutricionista-container">
+        <section class="diagnosticos-section">
+            <div class="section-header">
+                <h1>Diagnósticos de Pacientes</h1>
+                <div class="filtros">
+                    <select id="filtro-status" class="filtro-select">
+                        <option value="">Todos os Status</option>
+                        <option value="enviado_para_avaliacao">Pendente de Avaliação</option>
+                        <option value="avaliado">Avaliado</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="diagnosticos-lista" class="diagnosticos-lista">
+                <!-- Os diagnósticos serão carregados aqui dinamicamente -->
+            </div>
+        </section>
+
+        <!-- Modal para visualizar e avaliar diagnóstico -->
+        <div id="modal-diagnostico" class="modal-diagnostico">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Avaliação de Diagnóstico</h2>
+                    <button id="btn-fechar-modal" class="btn-fechar">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="under-info-section">
+                        <div class="info-section-left">
+                                <!-- Informações do Paciente -->
+                            <section class="info-section">
+                                <h3>Informações do Paciente</h3>
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <span class="label">Nome do Paciente:</span>
+                                        <span id="modal-nomePaciente" class="value"></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="label">Data de Nascimento:</span>
+                                        <span id="modal-dataNascimento" class="value"></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="label">Gênero:</span>
+                                        <span id="modal-genero" class="value"></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="label">Profissão:</span>
+                                        <span id="modal-profissao" class="value"></span>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <!-- Hábitos e Estilo de Vida -->
+                            <section class="info-section">
+                                <h3>Hábitos e Estilo de Vida</h3>
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <span class="label">Nível de Atividade Física:</span>
+                                        <span id="modal-nivelAtividadeFisica" class="value"></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="label">Qualidade do Sono:</span>
+                                        <span id="modal-qualidadeSono" class="value"></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="label">Refeições por Dia:</span>
+                                        <span id="modal-refeicoesDia" class="value"></span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="label">Consumo de Água:</span>
+                                        <span id="modal-consumoAgua" class="value"></span>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="info-section-right">
+                            <!-- Informações Alimentares -->
+                            <section class="info-section">
+                                <h3>Informações Alimentares</h3>
+                                <div class="info-block">
+                                    <span class="label">Preferências Alimentares:</span>
+                                    <p id="modal-preferenciasAlimentares" class="value-block"></p>
+                                </div>
+                                <div class="info-block">
+                                    <span class="label">Aversões ou Restrições:</span>
+                                    <p id="modal-restricoes" class="value-block"></p>
+                                </div>
+                                <div class="info-block">
+                                    <span class="label">Frequência de Consumo:</span>
+                                    <p id="modal-frequenciaConsumo" class="value-block"></p>
+                                </div>
+                            </section>
+
+                            <!-- Histórico de Saúde -->
+                            <section class="info-section">
+                                <h3>Histórico de Saúde</h3>
+                                <div class="info-block">
+                                    <span class="label">Doenças Diagnosticadas:</span>
+                                    <p id="modal-doencaDiagnosticada" class="value-block"></p>
+                                </div>
+                                <div class="info-block">
+                                    <span class="label">Medicamentos Contínuos:</span>
+                                    <p id="modal-medicamento" class="value-block"></p>
+                                </div>
+                                <div class="info-block">
+                                    <span class="label">Suplementos ou Vitaminas:</span>
+                                    <p id="modal-suplementos" class="value-block"></p>
+                                </div>
+                                <div class="info-block">
+                                    <span class="label">Digestão:</span>
+                                    <p id="modal-digestao" class="value-block"></p>
+                                </div>
+                                <div class="info-block">
+                                    <span class="label">Queixas Gerais:</span>
+                                    <p id="modal-queixasGerais" class="value-block"></p>
+                                </div>
+                            </section>
+                        </div>
+                        
+
+                        
+
+                        <!-- Objetivo Principal -->
+                        <section class="info-section-obj">
+                            <h3>Objetivo Principal</h3>
+                            <div class="info-block-obj">
+                                <p id="modal-objetivoPrincipal" class="value-block"></p>
+                            </div>
+                        </section>
+                    </div>
+                    
+
+                    <!-- Formulário de Prescrição -->
+                    <section class="prescricao-section">
+                        <h3>Prescrição Nutricional</h3>
+                        <form id="form-prescricao">
+                            <div class="form-group">
+                                <label for="prescricao-calorias">Calorias Diárias Recomendadas (kcal):</label>
+                                <input type="number" id="prescricao-calorias" name="prescricao_calorias" min="0" step="50" placeholder="Ex: 2000" required>
+                            </div>
+
+                            <div class="macros-grid">
+                                <div class="form-group">
+                                    <label for="prescricao-carboidratos">Carboidratos (%):</label>
+                                    <input type="number" id="prescricao-carboidratos" name="carboidratos_percentual" min="0" max="100" step="1" placeholder="Ex: 50" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="prescricao-proteinas">Proteínas (%):</label>
+                                    <input type="number" id="prescricao-proteinas" name="proteinas_percentual" min="0" max="100" step="1" placeholder="Ex: 30" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="prescricao-gorduras">Gorduras (%):</label>
+                                    <input type="number" id="prescricao-gorduras" name="gorduras_percentual" min="0" max="100" step="1" placeholder="Ex: 20" required>
+                                </div>
+                            </div>
+                                <div class="right-content">
+                                    <div class="form-group">
+                                        <label for="prescricao-observacoes">Observações e Comentários:</label>
+                                        <textarea id="prescricao-observacoes" name="observacoes_nutricionista" rows="5" placeholder="Adicione observações, recomendações e comentários importantes..."></textarea>
+                                    </div>
+                                </div>
+                            
+
+                            <div class="form-actions">
+                                <button type="button" id="btn-cancelar-prescricao" class="btn btn-secondary">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Salvar Prescrição</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/nutricionista_diagnosticos.js"></script>
+</body>
+
+</html>
