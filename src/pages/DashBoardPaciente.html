@@ -18,16 +18,128 @@
                     <h2 class="topic-title">Resumo diário</h2>
                     <div class="topic-content">
                         <div class="left-content">
-                            <h3 class="info-1">Calorias restantes</h3>
-                                <div class="info-1-kcal">2000kcal</div>
-                            <h3 class="info-2">Calorias <br> consumidas hoje</h3>
-                                <div class="info-2-kcal">120kcal</div>
+                            <div class="top-left-content">
+                                <div class="info-1">
+                                        <h3 class="info-1-title">Calorias <br> restantes</h3>
+                                    <div class="info-1-kcal">2000kcal</div>
+                                </div>
+                                <div class="info-2">
+                                        <h3 class="info-2-title">Calorias <br> consumidas hoje</h3>
+                                    <div class="info-2-kcal">120kcal</div>
+                                </div>
+                            </div>
+                            
+                            <div class="prescricoes-field-group">
+                                <div class="prescricoes-field">
+                                    <img class="prescricoes-img" src="../assets/img/trigo.jpg" alt="">
+                                        <h3 class="carb">Carboidratos</h3>
 
-                                
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 60%;"></div>
+                                    </div>
+
+                                    <p class="grams">40g</p>
+                                </div>
+                                <div class="prescricoes-field">
+                                    <img class="prescricoes-img" src="../assets/img/carne.jpg" alt="">
+                                        <h3 class="carb">Carboidratos</h3>
+
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 60%;"></div>
+                                    </div>
+
+                                    <p class="grams">40g</p>
+                                </div>
+                                <div class="prescricoes-field">
+                                    <img class="prescricoes-img" src="../assets/img/abacate.jpg" alt="">
+                                        <h3 class="carb">Carboidratos</h3>
+
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 60%;"></div>
+                                    </div>
+
+                                    <p class="grams">40g</p>
+                                </div>
+                            </div>
                         </div>
+                        
+                        <div class="rigth-content">
+                            <div class="field">
+                                <div class="image">
+                                    <img class="right-field-img" src="../assets/img/cafe_manha.jpg" alt="Café da manhã">
+                                </div>
+                                <div class="field-info">
+                                    <h1 class="field-title">Café da manhã</h1>
+                                    <p class="field-desc">Pão, ovo, queijo mussarela e suco de uva</p>
+
+                                </div>
+
+                                <div class="nutrientes-m">
+                                        <div class="nutriente-m">
+                                            <img src="../assets/img/trigo.jpg" alt="">
+                                                <div class="bar-container-m">
+                                                    <div class="bar-fill-m" style="width: 40%;"></div>
+                                                </div>
+                                            <span class="grams-m">10g</span>
+                                        </div>
+
+                                        <div class="nutriente-m">
+                                            <img src="../assets/img/carne.jpg" alt="">
+                                                <div class="bar-container-m">
+                                                    <div class="bar-fill-m" style="width: 40%;"></div>
+                                                </div>
+                                            <span class="grams-m">10g</span>
+                                        </div>
+
+                                        <div class="nutriente-m">
+                                            <img src="../assets/img/abacate.jpg" alt="">
+                                                <div class="bar-container-m">
+                                                    <div class="bar-fill-m" style="width: 20%;"></div>
+                                                </div>
+                                            <span class="grams-m">5g</span>
+                                        </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+            </section>
+
+            <section class="topic-2" id="newSnack">
+                <h2 class="topic-title">Adicionar nova refeição</h2>
+                    <div class="dias-container">
+                        <button class="seta esquerda">&#8249;</button>
+
+                        <div class="dias-scroll" id="dias"></div>
+
+                        <button class="seta direita">&#8250;</button>
+                    </div>
+
+                    <div class="topic-2-content">
+                        <div class="field-2">
+                            <img class="right-field-img-2" src="../assets/img/cafe_manha.jpg" alt="">
+                                <h1 class="field-2-title">Café da manhã</h1>
+                                <button class="add-button">+</button>
+                        </div>   
+                        <div class="field-2">
+                            <img class="right-field-img-2" src="../assets/img/almoco.jpg" alt="">
+                                <h1 class="field-2-title">Almoço</h1>
+                                <button class="add-button">+</button>
+                        </div>   
+                        <div class="field-2">
+                            <img class="right-field-img-2" src="../assets/img/lancheTarde.jpg" alt="">
+                                <h1 class="field-2-title">Lanche da tarde</h1>
+                                <button class="add-button">+</button>
+                        </div>   
+                        <div class="field-2">
+                            <img class="right-field-img-2" src="../assets/img/jantar.jpg" alt="">
+                                <h1 class="field-2-title">Jantar</h1>
+                                <button class="add-button">+</button>
+                        </div>   
                     </div>
             </section>
         </section>
     </main>
+    <script src="../js/DashBoardPaciente.js"></script>
 </body>
 </html>
