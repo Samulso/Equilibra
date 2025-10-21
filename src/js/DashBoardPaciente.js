@@ -402,24 +402,38 @@ class DashboardPacienteManager {
 
     // Botão de remover
     const btnRemover = document.createElement('button');
-    btnRemover.textContent = '×';
     btnRemover.style.cssText = `
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: #f44336;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      font-size: 20px;
-      line-height: 1;
-      transition: background 0.3s;
+    border: none;
+    background-color: #1f2420;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    height: 100px;
+    margin-left:30px;
+    width: 50px;
+    font-size: 16px;
+    transition: transform 0.2s ease;
     `;
-    btnRemover.addEventListener('mouseover', () => btnRemover.style.background = '#d32f2f');
-    btnRemover.addEventListener('mouseout', () => btnRemover.style.background = '#f44336');
+
+    const icon = document.createElement('i');
+      icon.classList.add('fa-solid', 'fa-trash'); 
+      icon.style.fontWeight = '600'
+      icon.style.fontSize = '20px';
+      icon.style.pointerEvents = 'none'; 
+
+    btnRemover.appendChild(icon);
+
+    btnRemover.addEventListener('mouseenter', () => {
+      btnRemover.style.transform = 'translatex(9px)';
+      
+    });
+
+    btnRemover.addEventListener('mouseleave', () => {
+      btnRemover.style.transform = 'translatex(0)';
+      
+    });
+
     btnRemover.addEventListener('click', () => this.removerRefeicao(refeicao.id));
 
     field.appendChild(imageDiv);
@@ -563,7 +577,7 @@ class DashboardPacienteManager {
 
     modal.innerHTML = `
       <div style="
-        background: white;
+        background: #1f2420;
         padding: 30px;
         border-radius: 15px;
         max-width: 500px;

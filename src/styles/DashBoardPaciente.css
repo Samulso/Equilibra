@@ -202,26 +202,32 @@ a {
 }
 
 .bar-container {
-  width: 50%;
+  display: flex;
+  width: 100%;
   height: 15px;
   background-color: #cdcdcd;
   border-radius: 30px;
-  overflow: hidden;
-  margin: 0 10px;
+  flex: 2;
 }
 
 .bar-fill {
   height: 100%;
   background-color: #c1972b;
   border-radius:  30px 30px 30px 30px ;
-  transition: width 0.4s ease;
+  transition: width 0.7s ease-out;
 }
 
 .grams {
   font-weight: bold;
   font-size: 22px;
   font-weight: 400;
-  color: #333;
+  color: #333; 
+  display: flex;
+  width: 25%;
+  justify-content: end;
+  word-break:break-all;
+  margin-right: -10%;
+  margin-left: 2%;
 }
 
 .rigth-content {
@@ -297,6 +303,7 @@ a {
   width: 18px;
   height: 18px;
   object-fit: contain;
+  
 }
 
 .bar-container-m {
