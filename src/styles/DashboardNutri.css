@@ -226,5 +226,18 @@ a {
     gap: 15px;
 }
 
+.logout-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
 
+.logout-btn:hover {
+  background-color: #c0392b;
+}
 

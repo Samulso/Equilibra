@@ -1,10 +1,16 @@
 /**
- * Sistema de Resumo do Diagnóstico
- * Exibe os dados preenchidos pelo paciente e permite envio para o nutricionista
+ * Sistema de Resumo do Diagnóstico - Corrigido
+ * Exibe resumo e envia para nutricionista
  */
 
 class ResumoDiagnosticoManager {
   constructor() {
+    // Protege a página
+    if (!window.authManager || !window.authManager.protegerPagina('paciente')) {
+      return;
+    }
+
+    this.pacienteAtual = window.authManager.obterUsuarioAtual();
     this.diagnostico = null;
     this.inicializar();
   }
@@ -23,23 +29,26 @@ class ResumoDiagnosticoManager {
   }
 
   /**
-   * Carrega o diagnóstico do localStorage
+   * Carrega o diagnóstico
    */
   carregarDiagnostico() {
     try {
-      // Tenta carregar o diagnóstico em rascunho
-      const rascunhos = JSON.parse(localStorage.getItem('diagnosticos_rascunho')) || [];
-      if (rascunhos.length > 0) {
-        // Carrega o rascunho mais recente
-        this.diagnostico = rascunhos[rascunhos.length - 1];
+      // Tenta carregar do sessionStorage primeiro (dados temporários)
+      const diagnosticoTemp = sessionStorage.getItem('diagnostico_temp');
+      if (diagnosticoTemp) {
+        const dados = JSON.parse(diagnosticoTemp);
+        if (dados.paciente_id === this.pacienteAtual.id) {
+          this.diagnostico = dados;
+          return;
+        }
       }
 
-      // Se não encontrou rascunho, tenta carregar do sessionStorage (dados temporários)
-      if (!this.diagnostico) {
-        const diagnosticoTemp = sessionStorage.getItem('diagnostico_temp');
-        if (diagnosticoTemp) {
-          this.diagnostico = JSON.parse(diagnosticoTemp);
-        }
+      // Se não encontrou, tenta carregar do rascunho
+      const rascunhos = JSON.parse(localStorage.getItem('diagnosticos_rascunho')) || [];
+      const rascunhoPaciente = rascunhos.find(d => d.paciente_id === this.pacienteAtual.id);
+      
+      if (rascunhoPaciente) {
+        this.diagnostico = rascunhoPaciente;
       }
     } catch (erro) {
       console.error('Erro ao carregar diagnóstico:', erro);
@@ -47,13 +56,13 @@ class ResumoDiagnosticoManager {
   }
 
   /**
-   * Preenche o resumo com os dados do diagnóstico
+   * Preenche o resumo
    */
   preencherResumo() {
     const d = this.diagnostico.informacoes_saude;
     const h = this.diagnostico.historico_medico;
 
-    // Atualiza a data do documento
+    // Data do documento
     const dataElement = document.querySelector('.document-date');
     if (dataElement) {
       const dataCriacao = new Date(this.diagnostico.data_criacao).toLocaleDateString('pt-BR');
@@ -98,7 +107,7 @@ class ResumoDiagnosticoManager {
   }
 
   /**
-   * Preenche um elemento com um valor
+   * Preenche um elemento
    */
   preencherElemento(elementId, valor) {
     const elemento = document.getElementById(elementId);
@@ -108,155 +117,111 @@ class ResumoDiagnosticoManager {
   }
 
   /**
-   * Inicializa os eventos
+   * Inicializa eventos
    */
   inicializarEventos() {
-    // Procura por botões de ação
     const btnEnviar = document.getElementById('btn-enviar-diagnostico');
     const btnEditar = document.getElementById('btn-editar-diagnostico');
     const btnVoltar = document.getElementById('btn-voltar');
     const btnImprimir = document.getElementById('btn-imprimir');
-    const btnExportar = document.getElementById('btn-exportar');
 
     if (btnEnviar) {
       btnEnviar.addEventListener('click', () => this.enviarParaNutricionista());
     }
 
-    if (btnEditar) {
-      btnEditar.addEventListener('click', () => this.voltarParaEdicao());
-    }
-
-    if (btnVoltar) {
-      btnVoltar.addEventListener('click', () => this.voltarParaEdicao());
+    if (btnEditar || btnVoltar) {
+      const btn = btnEditar || btnVoltar;
+      btn.addEventListener('click', () => this.voltarParaEdicao());
     }
 
     if (btnImprimir) {
-      btnImprimir.addEventListener('click', () => this.imprimirResumo());
+      btnImprimir.addEventListener('click', () => window.print());
     }
 
-    if (btnExportar) {
-      btnExportar.addEventListener('click', () => this.exportarJSON());
+    // Cria barra de ação se não houver botões
+    if (!btnEnviar && !btnEditar && !btnVoltar) {
+      this.criarBarraAcao();
     }
-
-    // Se não houver botões, cria uma barra de ação flutuante
-    this.criarBarraAcao();
   }
 
   /**
-   * Cria uma barra de ação flutuante se não houver botões
+   * Cria barra de ação flutuante
    */
   criarBarraAcao() {
-    // Verifica se já existe uma barra de ação
-    if (document.getElementById('barra-acao-resumo')) {
-      return;
-    }
+    if (document.getElementById('barra-acao-resumo')) return;
 
-    const barraAcao = document.createElement('div');
-    barraAcao.id = 'barra-acao-resumo';
-    barraAcao.style.cssText = `
+    const barra = document.createElement('div');
+    barra.id = 'barra-acao-resumo';
+    barra.style.cssText = `
       position: fixed;
       bottom: 20px;
       right: 20px;
       display: flex;
       gap: 10px;
       z-index: 1000;
-      flex-direction: column;
     `;
 
-    // Botão Enviar
-    const btnEnviar = document.createElement('button');
-    btnEnviar.textContent = 'Enviar para Nutricionista';
-    btnEnviar.style.cssText = `
-      padding: 12px 20px;
-      background-color: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 14px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s;
-    `;
-    btnEnviar.addEventListener('mouseover', () => btnEnviar.style.backgroundColor = '#45a049');
-    btnEnviar.addEventListener('mouseout', () => btnEnviar.style.backgroundColor = '#4caf50');
-    btnEnviar.addEventListener('click', () => this.enviarParaNutricionista());
+    const btnEnviar = this.criarBotao('Enviar para Nutricionista', '#4caf50', () => this.enviarParaNutricionista());
+    const btnEditar = this.criarBotao('Editar Formulário', '#2196f3', () => this.voltarParaEdicao());
 
-    // Botão Editar
-    const btnEditar = document.createElement('button');
-    btnEditar.textContent = 'Editar Formulário';
-    btnEditar.style.cssText = `
-      padding: 12px 20px;
-      background-color: #2196f3;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 14px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s;
-    `;
-    btnEditar.addEventListener('mouseover', () => btnEditar.style.backgroundColor = '#0b7dda');
-    btnEditar.addEventListener('mouseout', () => btnEditar.style.backgroundColor = '#2196f3');
-    btnEditar.addEventListener('click', () => this.voltarParaEdicao());
-
-    // Botão Imprimir
-    const btnImprimir = document.createElement('button');
-    btnImprimir.textContent = 'Imprimir';
-    btnImprimir.style.cssText = `
-      padding: 12px 20px;
-      background-color: #ff9800;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 14px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s;
-    `;
-    btnImprimir.addEventListener('mouseover', () => btnImprimir.style.backgroundColor = '#e68900');
-    btnImprimir.addEventListener('mouseout', () => btnImprimir.style.backgroundColor = '#ff9800');
-    btnImprimir.addEventListener('click', () => this.imprimirResumo());
-
-    barraAcao.appendChild(btnEnviar);
-    barraAcao.appendChild(btnEditar);
-    barraAcao.appendChild(btnImprimir);
-
-    document.body.appendChild(barraAcao);
+    barra.appendChild(btnEnviar);
+    barra.appendChild(btnEditar);
+    document.body.appendChild(barra);
   }
 
   /**
-   * Envia o diagnóstico para o nutricionista
+   * Cria um botão
+   */
+  criarBotao(texto, cor, callback) {
+    const btn = document.createElement('button');
+    btn.textContent = texto;
+    btn.style.cssText = `
+      padding: 12px 20px;
+      background-color: ${cor};
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      transition: opacity 0.3s;
+    `;
+    btn.addEventListener('mouseover', () => btn.style.opacity = '0.9');
+    btn.addEventListener('mouseout', () => btn.style.opacity = '1');
+    btn.addEventListener('click', callback);
+    return btn;
+  }
+
+  /**
+   * Envia para nutricionista
    */
   enviarParaNutricionista() {
+    if (!confirm('Deseja enviar este diagnóstico para avaliação do nutricionista?')) {
+      return false;
+    }
+
     try {
-      // Atualiza o status do diagnóstico
+      // Atualiza o status
       this.diagnostico.status = 'enviado_para_avaliacao';
       this.diagnostico.data_atualizacao = new Date().toISOString();
 
       // Remove dos rascunhos
       const rascunhos = JSON.parse(localStorage.getItem('diagnosticos_rascunho')) || [];
-      const indiceRascunho = rascunhos.findIndex(d => d.id === this.diagnostico.id);
-      if (indiceRascunho >= 0) {
-        rascunhos.splice(indiceRascunho, 1);
-        localStorage.setItem('diagnosticos_rascunho', JSON.stringify(rascunhos));
-      }
+      const rascunhosFiltrados = rascunhos.filter(d => d.id !== this.diagnostico.id);
+      localStorage.setItem('diagnosticos_rascunho', JSON.stringify(rascunhosFiltrados));
 
       // Adiciona aos diagnósticos enviados
       const diagnosticosEnviados = JSON.parse(localStorage.getItem('diagnosticos_enviados')) || [];
       diagnosticosEnviados.push(this.diagnostico);
       localStorage.setItem('diagnosticos_enviados', JSON.stringify(diagnosticosEnviados));
 
-      // Limpa o sessionStorage
+      // Limpa sessionStorage
       sessionStorage.removeItem('diagnostico_temp');
 
       this.mostrarNotificacao('Diagnóstico enviado com sucesso! Aguarde a avaliação do nutricionista.', 'sucesso');
 
-      // Redireciona para a dashboard após 2 segundos
       setTimeout(() => {
-        window.location.href = './DashBoardPaciente.html'; // Ajuste o caminho conforme necessário
+        window.location.href = './dashboardPaciente.html';
       }, 2000);
 
       return true;
@@ -268,43 +233,18 @@ class ResumoDiagnosticoManager {
   }
 
   /**
-   * Volta para a página de edição do formulário
+   * Volta para edição
    */
   voltarParaEdicao() {
-    // Salva o diagnóstico no sessionStorage para recuperar na página de formulário
     sessionStorage.setItem('diagnostico_temp', JSON.stringify(this.diagnostico));
-    
-    // Redireciona para a página de formulário
-    window.location.href = './formularioDiagnostico.html'; // Ajuste o caminho conforme necessário
+    window.location.href = './formularioDiagnostico.html';
   }
 
   /**
-   * Imprime o resumo
-   */
-  imprimirResumo() {
-    window.print();
-  }
-
-  /**
-   * Exporta o diagnóstico em JSON
-   */
-  exportarJSON() {
-    const dataStr = JSON.stringify(this.diagnostico, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `diagnostico_${this.diagnostico.id}.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-  }
-
-  /**
-   * Mostra uma notificação ao usuário
+   * Mostra notificação
    */
   mostrarNotificacao(mensagem, tipo = 'info') {
     const notificacao = document.createElement('div');
-    notificacao.className = `notificacao notificacao-${tipo}`;
     notificacao.textContent = mensagem;
     notificacao.style.cssText = `
       position: fixed;
@@ -314,51 +254,37 @@ class ResumoDiagnosticoManager {
       border-radius: 5px;
       z-index: 10000;
       font-weight: bold;
-      animation: slideIn 0.3s ease-in-out;
+      background: ${tipo === 'sucesso' ? '#4caf50' : tipo === 'erro' ? '#f44336' : '#2196f3'};
+      color: white;
     `;
 
-    const cores = {
-      sucesso: '#4caf50',
-      erro: '#f44336',
-      aviso: '#ff9800',
-      info: '#2196f3'
-    };
-
-    notificacao.style.backgroundColor = cores[tipo] || cores.info;
-    notificacao.style.color = 'white';
-
     document.body.appendChild(notificacao);
-
-    setTimeout(() => {
-      notificacao.remove();
-    }, 3000);
+    setTimeout(() => notificacao.remove(), 3000);
   }
 
   /**
-   * Mostra uma mensagem de erro
+   * Mostra mensagem de erro
    */
   mostrarMensagemErro(mensagem) {
-    const container = document.querySelector('.document-container');
-    if (container) {
-      container.innerHTML = `
-        <div style="padding: 20px; text-align: center; color: #f44336;">
-          <h2>${mensagem}</h2>
-          <button onclick="window.location.href='./formularioDiagnostico.html'" style="
-            padding: 10px 20px;
-            background-color: #2196f3;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-          ">Voltar ao Formulário</button>
-        </div>
-      `;
-    }
+    const container = document.querySelector('.document-container') || document.body;
+    container.innerHTML = `
+      <div style="padding: 40px; text-align: center;">
+        <h2 style="color: #f44336; margin-bottom: 20px;">${mensagem}</h2>
+        <button onclick="window.location.href='./formularioDiagnostico.html'" style="
+          padding: 12px 25px;
+          background-color: #2196f3;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          font-weight: bold;
+        ">Voltar ao Formulário</button>
+      </div>
+    `;
   }
 }
 
-// Inicializa o manager quando o DOM está pronto
+// Inicializa quando DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
   window.resumoDiagnosticoManager = new ResumoDiagnosticoManager();
 });

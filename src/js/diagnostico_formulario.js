@@ -1,10 +1,16 @@
 /**
- * Sistema de Diagnóstico Nutricional
- * Gerencia o formulário de diagnóstico do paciente
+ * Sistema de Diagnóstico Nutricional - Corrigido
+ * Vincula corretamente o diagnóstico ao paciente logado
  */
 
 class DiagnosticoFormManager {
   constructor() {
+    // Protege a página (requer login como paciente)
+    if (!window.authManager || !window.authManager.protegerPagina('paciente')) {
+      return;
+    }
+
+    this.pacienteAtual = window.authManager.obterUsuarioAtual();
     this.diagnostico = this.inicializarDiagnostico();
     this.formulario = document.getElementById('diagnostic-form');
     this.inicializarEventos();
@@ -17,10 +23,11 @@ class DiagnosticoFormManager {
   inicializarDiagnostico() {
     return {
       id: this.gerarId(),
-      paciente_id: this.obterPacienteId(),
+      paciente_id: this.pacienteAtual.id, // ID real do paciente logado
+      paciente_nome: this.pacienteAtual.nome, // Nome para referência
       data_criacao: new Date().toISOString(),
       data_atualizacao: new Date().toISOString(),
-      status: 'pendente_avaliacao',
+      status: 'rascunho',
       informacoes_saude: {
         data_nascimento: '',
         idade: 0,
@@ -61,14 +68,20 @@ class DiagnosticoFormManager {
   }
 
   /**
-   * Carrega dados temporários do sessionStorage (para edição)
+   * Carrega dados temporários do sessionStorage
    */
   carregarDadosTemp() {
     try {
       const diagnosticoTemp = sessionStorage.getItem('diagnostico_temp');
       if (diagnosticoTemp) {
-        this.diagnostico = JSON.parse(diagnosticoTemp);
-        this.preencherFormulario();
+        const dados = JSON.parse(diagnosticoTemp);
+        
+        // Verifica se é do paciente atual
+        if (dados.paciente_id === this.pacienteAtual.id) {
+          this.diagnostico = dados;
+          this.preencherFormulario();
+        }
+        
         sessionStorage.removeItem('diagnostico_temp');
       }
     } catch (erro) {
@@ -85,10 +98,7 @@ class DiagnosticoFormManager {
       return;
     }
 
-    // Listeners para cada campo
     this.adicionarListenersAosCampos();
-
-    // Listeners para botões de ação
     this.adicionarListenersBotoes();
   }
 
@@ -265,19 +275,16 @@ class DiagnosticoFormManager {
    * Adiciona listeners aos botões de ação
    */
   adicionarListenersBotoes() {
-    // Botão Próximo (submit)
     const submitBtn = document.getElementById('submit-btn');
     if (submitBtn) {
       submitBtn.addEventListener('click', () => this.proximaPagina());
     }
 
-    // Botão para salvar rascunho (se existir)
     const btnSalvarRascunho = document.getElementById('btn-salvar-rascunho');
     if (btnSalvarRascunho) {
       btnSalvarRascunho.addEventListener('click', () => this.salvarRascunho());
     }
 
-    // Botão para limpar formulário (se existir)
     const btnLimpar = document.getElementById('btn-limpar-formulario');
     if (btnLimpar) {
       btnLimpar.addEventListener('click', () => this.limparFormulario());
@@ -302,7 +309,7 @@ class DiagnosticoFormManager {
   }
 
   /**
-   * Valida se o formulário foi preenchido corretamente
+   * Valida o formulário
    */
   validarFormulario() {
     const camposObrigatorios = [
@@ -324,7 +331,7 @@ class DiagnosticoFormManager {
 
     if (camposVazios.length > 0) {
       console.warn('Campos obrigatórios vazios:', camposVazios);
-      this.mostrarNotificacao(`Por favor, preencha todos os campos obrigatórios.`, 'aviso');
+      this.mostrarNotificacao('Por favor, preencha todos os campos obrigatórios.', 'aviso');
       return false;
     }
 
@@ -340,26 +347,23 @@ class DiagnosticoFormManager {
     }
 
     try {
-      // Salva o diagnóstico como rascunho
+      // Salva como rascunho do paciente
       const rascunhos = JSON.parse(localStorage.getItem('diagnosticos_rascunho')) || [];
-      const indice = rascunhos.findIndex(d => d.id === this.diagnostico.id);
+      
+      // Remove rascunhos antigos do mesmo paciente
+      const rascunhosFiltrados = rascunhos.filter(d => d.paciente_id !== this.pacienteAtual.id);
+      
+      // Adiciona o novo rascunho
+      rascunhosFiltrados.push(this.diagnostico);
+      localStorage.setItem('diagnosticos_rascunho', JSON.stringify(rascunhosFiltrados));
 
-      if (indice >= 0) {
-        rascunhos[indice] = this.diagnostico;
-      } else {
-        rascunhos.push(this.diagnostico);
-      }
-
-      localStorage.setItem('diagnosticos_rascunho', JSON.stringify(rascunhos));
-
-      // Salva também no sessionStorage para a próxima página
+      // Salva no sessionStorage para a próxima página
       sessionStorage.setItem('diagnostico_temp', JSON.stringify(this.diagnostico));
 
       this.mostrarNotificacao('Prosseguindo para resumo...', 'info');
 
-      // Redireciona para a página de resumo após 1 segundo
       setTimeout(() => {
-        window.location.href = './resumoFormulario.html'; // Ajuste o caminho conforme necessário
+        window.location.href = './resumoFormulario.html';
       }, 1000);
 
       return true;
@@ -371,22 +375,20 @@ class DiagnosticoFormManager {
   }
 
   /**
-   * Salva o diagnóstico como rascunho no localStorage
+   * Salva como rascunho
    */
   salvarRascunho() {
     try {
       const rascunhos = JSON.parse(localStorage.getItem('diagnosticos_rascunho')) || [];
-      const indice = rascunhos.findIndex(d => d.id === this.diagnostico.id);
-
-      if (indice >= 0) {
-        rascunhos[indice] = this.diagnostico;
-      } else {
-        rascunhos.push(this.diagnostico);
-      }
-
-      localStorage.setItem('diagnosticos_rascunho', JSON.stringify(rascunhos));
+      
+      // Remove rascunhos antigos do mesmo paciente
+      const rascunhosFiltrados = rascunhos.filter(d => d.paciente_id !== this.pacienteAtual.id);
+      
+      // Adiciona o novo rascunho
+      rascunhosFiltrados.push(this.diagnostico);
+      localStorage.setItem('diagnosticos_rascunho', JSON.stringify(rascunhosFiltrados));
+      
       this.mostrarNotificacao('Rascunho salvo com sucesso!', 'sucesso');
-
       return true;
     } catch (erro) {
       console.error('Erro ao salvar rascunho:', erro);
@@ -399,7 +401,7 @@ class DiagnosticoFormManager {
    * Limpa o formulário
    */
   limparFormulario() {
-    if (this.formulario) {
+    if (confirm('Deseja realmente limpar todos os campos?')) {
       this.formulario.reset();
       this.diagnostico = this.inicializarDiagnostico();
       this.mostrarNotificacao('Formulário limpo', 'info');
@@ -407,7 +409,7 @@ class DiagnosticoFormManager {
   }
 
   /**
-   * Preenche o formulário com os dados do diagnóstico
+   * Preenche o formulário com dados existentes
    */
   preencherFormulario() {
     const mapeamento = {
@@ -440,7 +442,7 @@ class DiagnosticoFormManager {
     // Preenche checkboxes
     const frequencia = this.diagnostico.informacoes_saude.frequencia_consumo;
     for (const [chave, valor] of Object.entries(frequencia)) {
-      const checkbox = document.getElementById(chave);
+      const checkbox = document.querySelector(`input[name="frequent-consumption"][value="${chave}"]`);
       if (checkbox) {
         checkbox.checked = valor;
       }
@@ -448,7 +450,7 @@ class DiagnosticoFormManager {
   }
 
   /**
-   * Mostra uma notificação ao usuário
+   * Mostra notificação
    */
   mostrarNotificacao(mensagem, tipo = 'info') {
     const notificacao = document.createElement('div');
@@ -483,21 +485,14 @@ class DiagnosticoFormManager {
   }
 
   /**
-   * Gera um ID único
+   * Gera ID único
    */
   gerarId() {
     return `diag_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
-
-  /**
-   * Obtém o ID do paciente (deve vir da sessão/autenticação)
-   */
-  obterPacienteId() {
-    return localStorage.getItem('paciente_id') || 'paciente_anonimo';
-  }
 }
 
-// Inicializa o manager quando o DOM está pronto
+// Inicializa quando DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
   window.diagnosticoFormManager = new DiagnosticoFormManager();
 });

@@ -459,3 +459,20 @@ a {
 .add-button:hover {
   background-color: #572423;
 }
+.logout-btn {
+  background-color: #e74c3c;
+  position: fixed;
+  z-index: 999999 !important;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  pointer-events: auto !important;
+}
+
+.logout-btn:hover {
+  background-color: #85261b;
+}
