@@ -241,3 +241,13 @@ a {
   background-color: #c0392b;
 }
 
+.count-badge {
+    background: #667eea;
+    color: white;
+    margin-top: 3%;
+    margin-left: 12px;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: bold;
+}

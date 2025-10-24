@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../styles/DashboardNutri.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    <script src="../js/auth.js"></script>
+    
     <script src="../js/all.js"></script>
 </head>
 <body>
@@ -20,29 +20,43 @@
                     <h2 class="topic-title">Painel do nutricionista</h2>
                     <div class="topic-content">
                         <div class="top">
-                            <h1 class="under-topic-title">Meus pacientes</h1>
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <h1 class="under-topic-title">Meus pacientes</h1>
+                                <span id="patient-count" class="count-badge">0 pacientes</span>
+                            </div>
                             <button class="add">Adicionar novo paciente</button>
                         </div>
                         
-                        <ul class="patients-list">
-                            <li class="patients">
-                                <img class="perfil" src="../assets/img/perfil.jpg" alt="">
-                                <div class="patient-infos">
-                                    <h1>Julia Martins</h1>
-                                    <p>ganho de massa muscular</p>
-                                </div>
-                                <div class="buttons">
-                                    <button class="info"><i class="fa-solid fa-circle-info"></i></button>
-                                    <button class="visualizer"><i class="fa-solid fa-eye"></i><h5 class="visualizer-text">Avaliar</h5></button>
-                                </div>
-                            </li>
+                        <ul class="patients-list" id="patients-list">
+                            
                         </ul>
+
+                        <div id="empty-state" class="empty-state">
+                            <h3>Nenhum paciente encontrado</h3>
+                            <p>Você ainda não avaliou nenhum paciente</p>
+                        </div>
                         
                     </div> 
             </section>
             <button id="logoutBtn" class="logout-btn">Sair</button>
         </section>
     </main>
+
+    <div id="modal-refeicoes" class="modal" style="display: none;">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-patient-name">Refeições do Paciente</h2>
+                <button class="modal-close" id="close-modal">&times;</button>
+            </div>
+            
+            <div id="modal-refeicoes-list" class="modal-body">
+                <!-- Refeições aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
     <script src="../js/DashboardNutri.js"></script>
 </body>
 </html>

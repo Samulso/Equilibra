@@ -74,40 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Opção de "Esqueci minha senha" (simulado)
-  const linkEsqueciSenha = document.getElementById('link-esqueci-senha');
-  if (linkEsqueciSenha) {
-    linkEsqueciSenha.addEventListener('click', (e) => {
-      e.preventDefault();
-      alert('Funcionalidade "Esqueci minha senha" será implementada em breve.\nPor favor, entre em contato com o suporte.');
-    });
-  }
-
-  // Adiciona botão de "Criar conta" se não existir
-  if (!document.getElementById('btn-criar-conta')) {
-    const btnCriarConta = document.createElement('div');
-    btnCriarConta.style.marginTop = '20px';
-    btnCriarConta.style.textAlign = 'center';
-    btnCriarConta.innerHTML = `
-      <p style="color: #666; margin-bottom: 10px;">Não tem uma conta?</p>
-      <a href="./register.html" style="
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #334d36;
-        color: white;
-        font-size:1rem;
-        text-decoration: none;
-        border-radius: 17px;
-        font-weight: bold;
-        transition: background-color 0.3s;
-      " onmouseover="this.style.backgroundColor='#3f6042'" 
-         onmouseout="this.style.backgroundColor='#3f6042'">
-        Criar uma conta
-      </a>
-    `;
-    loginForm.parentElement.appendChild(btnCriarConta);
-  }
-
+  
   // Foco automático no email
   if (emailInput) {
     emailInput.focus();

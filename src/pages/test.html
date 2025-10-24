@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="../styles/test.css">
+
+<div class="refeicao-card">
+    <div style="display: flex; justify-content: space-between; align-items: start;">
+        <div style="flex: 1;">
+          <h4 style="color: #333; margin-bottom: 10px;">${refeicao.nome}</h4>
+          <p style="color: #666; margin-bottom: 10px;">${refeicao.descricao}</p>
+          
+          <div style="display: flex; gap: 20px; margin-top: 15px;">
+            <div>
+              <strong style="color: #999; font-size: 0.85em;">CALORIAS</strong>
+              <p style="color: #333; font-size: 1.2em; font-weight: bold; margin: 5px 0;">${Math.round(refeicao.calorias)} kcal</p>
+            </div>
+            <div>
+              <strong style="color: #999; font-size: 0.85em;">CARBOIDRATOS</strong>
+              <p style="color: #ff9800; font-size: 1.2em; font-weight: bold; margin: 5px 0;">${refeicao.macros.carboidratos}g</p>
+            </div>
+            <div>
+              <strong style="color: #999; font-size: 0.85em;">PROTEÍNAS</strong>
+              <p style="color: #f44336; font-size: 1.2em; font-weight: bold; margin: 5px 0;">${refeicao.macros.proteinas}g</p>
+            </div>
+            <div>
+              <strong style="color: #999; font-size: 0.85em;">GORDURAS</strong>
+              <p style="color: #4caf50; font-size: 1.2em; font-weight: bold; margin: 5px 0;">${refeicao.macros.gorduras}g</p>
+            </div>
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-left: 20px;">
+          <button class="emoji-btn" data-refeicao-id="${refeicao.id}" data-avaliacao="bom" style="
+            border: none;
+            font-size: 1.5em;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+          "><img src="../assets/img/otimo.jpg" alt="" style="
+            width: 50px;
+            height: 50px;"></button>
+          
+          <button class="emoji-btn" data-refeicao-id="${refeicao.id}" data-avaliacao="neutro" style="
+            border: none;
+            font-size: 1.5em;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+          "><img src="../assets/img/neutro.jpg" alt="" style="
+            width: 50px;
+            height: 50px;"></button>
+          
+          <button class="emoji-btn" data-refeicao-id="${refeicao.id}" data-avaliacao="ruim" style="
+            border: none;
+            font-size: 1.5em;
+            background-color: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+          "><img src="../assets/img/ruim.jpg" alt="" style="
+            width: 50px;
+            height: 50px;"></button>
+        </div>
+      </div>
+      
+      <!-- Campo de observação (aparece ao clicar em algum emoji) -->
+      <div id="obs-${refeicao.id}" style="display: none; margin-top: 15px;">
+        <textarea placeholder="Adicione uma observação (opcional)..." style="
+          width: 100%;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          resize: vertical;
+          min-height: 80px;
+          font-family: inherit;
+        "></textarea>
+        <button class="salvar-avaliacao-btn" data-refeicao-id="${refeicao.id}" style="
+          margin-top: 10px;
+          padding: 10px 20px;
+          background: #667eea;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: bold;
+        ">Salvar Avaliação</button>
+      </div>
+</div>
+
