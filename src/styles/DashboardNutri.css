@@ -251,3 +251,281 @@ a {
     font-size: 0.85em;
     font-weight: bold;
 }
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: none; /* Escondido por padrão */
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Fundo escuro do modal */
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(3px);
+}
+
+/* Caixa branca do modal */
+.modal-content {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 85vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Cabeçalho do modal */
+.modal-header {
+    padding: 30px;
+    border-bottom: 2px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #252b19 0%, #3c442d 100%);
+    color: white;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+/* Botão de fechar (X) */
+.modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    font-size: 2em;
+    color: white;
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    line-height: 1;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* Corpo do modal (onde ficam as refeições) */
+.modal-body {
+    padding: 30px;
+    overflow-y: auto;
+    flex: 1;
+    background: #f8f9fa;
+}
+
+/* Scrollbar customizada */
+.modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #667eea;
+    border-radius: 10px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: #764ba2;
+}
+
+/* ===== CARDS DE REFEIÇÃO ===== */
+.refeicao-card {
+    background: white;
+    border: none;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.refeicao-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Título da refeição */
+.refeicao-card h4 {
+    color: #333;
+    font-size: 1.4em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.refeicao-card p {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Grupo de data */
+.refeicoes-data-grupo {
+    margin-bottom: 35px;
+}
+
+.refeicoes-data-grupo h3 {
+    color: #667eea;
+    font-size: 1.3em;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #667eea;
+    text-transform: capitalize;
+}
+
+/* ===== BOTÕES DE EMOJI ===== */
+.emoji-btn {
+    border: 3px solid transparent;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 5px;
+    border-radius: 50%;
+}
+
+.emoji-btn:hover {
+    transform: scale(1.15);
+    border-color: #667eea;
+}
+
+.emoji-btn:active {
+    transform: scale(0.95);
+}
+
+.emoji-btn img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: block;
+}
+
+/* ===== CAMPO DE OBSERVAÇÃO ===== */
+.refeicao-card textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.refeicao-card textarea:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* Botão de salvar avaliação */
+.salvar-avaliacao-btn {
+    margin-top: 12px;
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #374026 0%, #374026 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 15px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+}
+
+.salvar-avaliacao-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+}
+
+.salvar-avaliacao-btn:active {
+    transform: translateY(0);
+}
+
+/* ===== ESTADO VAZIO (quando não há refeições) ===== */
+.modal-body > div[style*="text-align: center"] {
+    padding: 80px 40px !important;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.modal-body > div[style*="text-align: center"] p:first-child {
+    font-size: 4em !important;
+    margin-bottom: 20px;
+}
+
+.modal-body > div[style*="text-align: center"] p:last-child {
+    font-size: 1.2em !important;
+    color: #999 !important;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-height: 95vh;
+    }
+    
+    .modal-header {
+        padding: 20px;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.4em;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .refeicao-card {
+        padding: 20px;
+    }
+    
+    .emoji-btn img {
+        width: 45px;
+        height: 45px;
+    }
+}
