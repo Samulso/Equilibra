@@ -138,8 +138,6 @@ class HistoricoRefeicoesManager {
       const dataRefeicao = new Date(refeicao.data).toISOString().split("T")[0];
       return dataRefeicao === dataString;
     });
-
-    console.log(`📅 ${this.refeicoesDoDay.length} refeições em ${dataString}`);
   }
 
   renderizarRefeicoes() {
