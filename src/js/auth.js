@@ -300,9 +300,9 @@ class AuthManager {
     }
 
     if (this.eNutricionista()) {
-      window.location.href = './src/pages/dashBoardNutri.html';
+      window.location.href = 'dashBoardNutri.html';
     } else {
-      window.location.href = './src/pages/dashBoardNutri.html';
+      window.location.href = 'dashBoardNutri.html';
     }
   }
 }
