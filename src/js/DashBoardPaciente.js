@@ -733,7 +733,7 @@ class DashboardPacienteManager {
 
     modal.innerHTML = `
       <div style="
-        background: #1f2420;
+        background: #ffffffff;
         padding: 30px;
         border-radius: 15px;
         max-width: 500px;
@@ -748,7 +748,7 @@ class DashboardPacienteManager {
             <label style="display: block; margin-bottom: 5px; font-weight: bold;">Descrição da Refeição:</label>
             <input type="text" id="refeicao-descricao" required
               placeholder="Ex: Pão integral com ovo e queijo"
-              style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+              style="width: 100%; padding: 10px; border: 1px solid #c7c7c7ff; border-radius: 5px;">
           </div>
 
           <div style="margin-bottom: 15px;">

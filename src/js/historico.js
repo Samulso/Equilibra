@@ -163,10 +163,12 @@ class HistoricoRefeicoesManager {
       lista.innerHTML = `
                 <div style="
                     text-align: center;
+                    justify-content:center;
+                    margin: 25px auto;
                     padding: 60px 20px;
                     color: #999;
                 ">
-                    <p style="font-size: 3em; margin-bottom: 15px;">🍽️</p>
+                    
                     <h3 style="color: #666; margin-bottom: 10px;">Nenhuma refeição registrada</h3>
                     <p>Não há refeições registradas neste dia</p>
                 </div>
