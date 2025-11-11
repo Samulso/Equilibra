@@ -92,7 +92,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url(../assets/img/background.jpg) no-repeat center center/cover;
+    background: url(./src/assets/img/background.jpg) no-repeat center center/cover;
     color: white;
     text-align: center;
     padding: 0 20px;
