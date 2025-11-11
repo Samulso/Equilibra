@@ -280,7 +280,7 @@ class AuthManager {
 
   protegerPagina(tipoRequerido = null) {
     if (!this.estaLogado()) {
-      window.location.href = './login.html';
+      window.location.href = 'login.html';
       return false;
     }
 
@@ -295,7 +295,7 @@ class AuthManager {
 
   redirecionarParaDashboard() {
     if (!this.estaLogado()) {
-      window.location.href = './login.html';
+      window.location.href = 'login.html';
       return;
     }
 
