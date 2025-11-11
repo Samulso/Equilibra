@@ -194,9 +194,9 @@ class HistoricoRefeicoesManager {
     let badgeAvaliacao = "";
     if (avaliacao) {
       const emojiMap = {
-        bom: "👍",
-        neutro: "😐",
-        ruim: "👎",
+        bom: "✅",
+        neutro: "⚠️",
+        ruim: "⛔",
       };
 
       const corMap = {
@@ -231,9 +231,6 @@ class HistoricoRefeicoesManager {
                         transition: all 0.3s;
                         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
                     ">
-                        <span style="font-size: 1.2em;">${
-                          emojiMap[avaliacao.avaliacao]
-                        }</span>
                         <span>Ver Avaliação</span>
                     </button>
                 </div>
@@ -352,9 +349,9 @@ class HistoricoRefeicoesManager {
         `;
 
     const emojiMap = {
-      bom: "👍",
-      neutro: "😐",
-      ruim: "👎",
+      bom: "✅",
+      neutro: "⚠️",
+      ruim: "⛔",
     };
 
     const textoMap = {
