@@ -221,7 +221,7 @@ class ResumoDiagnosticoManager {
       this.mostrarNotificacao('Diagnóstico enviado com sucesso! Aguarde a avaliação do nutricionista.', 'sucesso');
 
       setTimeout(() => {
-        window.location.href = './dashboardPaciente.html';
+        window.location.href = 'DashBoardPaciente.html';
       }, 2000);
 
       return true;
@@ -237,7 +237,7 @@ class ResumoDiagnosticoManager {
    */
   voltarParaEdicao() {
     sessionStorage.setItem('diagnostico_temp', JSON.stringify(this.diagnostico));
-    window.location.href = './formularioDiagnostico.html';
+    window.location.href = 'formularioDiagnostico.html';
   }
 
   /**
