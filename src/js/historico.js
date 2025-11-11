@@ -124,7 +124,6 @@ class HistoricoRefeicoesManager {
         (r) => r.paciente_id === this.pacienteAtual.id
       );
 
-      console.log(`✅ ${this.todasRefeicoes.length} refeições carregadas`);
     } catch (erro) {
       console.error("Erro ao carregar refeições:", erro);
       this.todasRefeicoes = [];
@@ -229,7 +228,7 @@ class HistoricoRefeicoesManager {
                         transition: all 0.3s;
                         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
                     ">
-                        <span>Ver Avaliaçãoooooooooooo</span>
+                        <span>Ver Avaliação</span>
                     </button>
                 </div>
             `;
