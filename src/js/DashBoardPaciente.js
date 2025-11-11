@@ -359,7 +359,6 @@ class DashboardPacienteManager {
     if (this.refeicoesHoje.length === 0) {
       rightContent.innerHTML = `
         <div style="padding: 30px; text-align: center; color: #999;">
-          <p style="font-size: 18px; margin-bottom: 10px;">📋</p>
           <p>Nenhuma refeição registrada hoje</p>
           <p style="font-size: 12px; margin-top: 10px;">Adicione sua primeira refeição abaixo!</p>
         </div>
@@ -943,9 +942,9 @@ class DashboardPacienteManager {
     `;
 
     const emojiMap = {
-      bom: "👍",
-      neutro: "😐",
-      ruim: "👎",
+      bom: "✅",
+      neutro: "⚠️",
+      ruim: "⛔",
     };
 
     const textoMap = {
@@ -1037,7 +1036,7 @@ class DashboardPacienteManager {
                         margin-bottom: 20px;
                     ">
                         <strong style="color: #333; display: block; margin-bottom: 8px;">
-                            💬 Observação:
+                            <i class="fa-solid fa-comments"></i> Observação:
                         </strong>
                         <p style="
                             margin: 0;
