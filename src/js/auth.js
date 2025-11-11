@@ -302,7 +302,7 @@ class AuthManager {
     if (this.eNutricionista()) {
       window.location.href = 'dashBoardNutri.html';
     } else {
-      window.location.href = 'dashBoardNutri.html';
+      window.location.href = 'DashBoardPaciente.html';
     }
   }
 }
