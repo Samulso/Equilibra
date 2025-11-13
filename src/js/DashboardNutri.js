@@ -38,13 +38,14 @@ class NutricionistaPacientesManager {
         new Date(diagnostico.data_avaliacao) >
           new Date(pacientesUnicos.get(pacienteId).data_avaliacao)
       ) {
+        // *** MODIFICADO ***
+        // Armazena o plano de refeições em vez de calorias/macros antigos
         pacientesUnicos.set(pacienteId, {
           id: pacienteId,
           nome: diagnostico.paciente_nome || "Paciente",
           diagnostico: diagnostico,
           objetivo: diagnostico.objetivo_principal,
-          calorias: diagnostico.prescricao_calorias,
-          macros: diagnostico.macronutrientes_recomendados,
+          plano_refeicoes: diagnostico.plano_refeicoes, // Novo
         });
       }
     });
@@ -84,6 +85,8 @@ class NutricionistaPacientesManager {
     const li = document.createElement("li");
     li.className = "patients";
 
+    // *** MODIFICADO ***
+    // Troca a linha de "Prescrição" (kcal) por "Plano" (definido/pendente)
     li.innerHTML = `
                 <img class="perfil" src="../assets/img/avatar-default.png" alt="Foto de ${
                   paciente.nome
@@ -93,9 +96,9 @@ class NutricionistaPacientesManager {
                         <p><strong>Objetivo:</strong> ${
                           paciente.objetivo || "Não informado"
                         }</p>
-                        <p><strong>Prescrição:</strong> ${
-                          paciente.calorias
-                        } kcal/dia</p>
+                        <p><strong>Plano:</strong> ${
+                          paciente.plano_refeicoes ? "Definido" : "Pendente"
+                        }</p>
                     </div>
 
                     <div class="buttons">
@@ -293,6 +296,17 @@ class NutricionistaPacientesManager {
             <i class="fa-solid fa-clock"></i>
             Pendente
           </span>`;
+    
+    // *** NOVO ***
+    // Pega a observação do paciente
+    const obsPaciente = refeicao.observacao_paciente;
+    const obsPacienteHTML = obsPaciente ? `
+      <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin-top: 15px; margin-bottom: 10px; border-radius: 5px;">
+          <strong style="color: #856404; font-size: 0.9em;">Observação do Paciente:</strong>
+          <p style="color: #666; margin: 5px 0 0 0; font-style: italic;">"${obsPaciente}"</p>
+      </div>
+    ` : '';
+    // *** FIM NOVO ***
 
     div.innerHTML = `
         ${badgeStatus}
@@ -305,6 +319,9 @@ class NutricionistaPacientesManager {
                 <p style="color: #666; margin-bottom: 10px;">${
                   refeicao.descricao
                 }</p>
+                
+                <!-- *** NOVO: Observação do Paciente *** -->
+                ${obsPacienteHTML}
                 
                 <div style="display: flex; gap: 20px; margin-top: 15px;">
                     <div>
@@ -344,7 +361,7 @@ class NutricionistaPacientesManager {
                         border-radius: 5px;
                     ">
                         <strong style="color: #2196f3; font-size: 0.9em;">
-                            Avaliação anterior:
+                            Sua avaliação anterior:
                         </strong>
                         <p style="color: #666; margin-top: 5px; font-size: 0.9em;">
                             ${
@@ -440,7 +457,7 @@ class NutricionistaPacientesManager {
                 border-radius: 8px;
                 cursor: pointer;
                 font-weight: bold;
-            ">${
+            }">${
               avaliacaoExistente ? "Atualizar Avaliação" : "Salvar Avaliação"
             }</button>
         </div>
@@ -519,21 +536,20 @@ class NutricionistaPacientesManager {
 
     this.fecharModal();
   }
+
   mostrarDetalhesPaciente(pacienteId) {
     const paciente = this.meusPacientes.find((p) => p.id === pacienteId);
     if (!paciente) return;
 
+    // *** MODIFICADO ***
+    // Remove a prescrição de kcal e macros, pois agora é um plano complexo
     alert(`
             Detalhes do paciente
         Nome: ${paciente.nome}
         Objetivo: ${paciente.objetivo}
-        Prescrição: ${paciente.calorias} kcal/dia
-
-                Macronutrientes:
-            • Carboidratos: ${paciente.macros.carboidratos_percentual}%
-            • Proteínas: ${paciente.macros.proteinas_percentual}%
-            • Gorduras: ${paciente.macros.gorduras_percentual}%
-
+        Plano de Refeições: ${
+          paciente.plano_refeicoes ? "Definido" : "Pendente"
+        }
         `);
   }
 

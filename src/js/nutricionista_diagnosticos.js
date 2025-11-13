@@ -1,11 +1,6 @@
-/**
- * Sistema de Gerenciamento de Diagnósticos - Nutricionista Corrigido
- * Visualiza e avalia diagnósticos dos pacientes
- */
-
 class NutricionistaDiagnosticosManager {
   constructor() {
-    // Protege a página (requer login como nutricionista)
+
     if (!window.authManager || !window.authManager.protegerPagina('nutricionista')) {
       return;
     }
@@ -14,21 +9,40 @@ class NutricionistaDiagnosticosManager {
     this.diagnosticoAtual = null;
     this.diagnosticosEnviados = [];
     this.diagnosticosAvaliados = [];
+
+    // *** NOVO ***
+    // Estado para o plano de refeições sendo editado no modal
+    this.planoRefeicoesAtual = this.getPlanoRefeicoesVazio();
+    this.abaRefeicaoAtual = 'breakfast'; // 'breakfast', 'lunch', 'snack', 'dinner'
+    this.mapaNomesRefeicoes = {
+        breakfast: 'Café da Manhã',
+        lunch: 'Almoço',
+        snack: 'Café da Tarde',
+        dinner: 'Jantar'
+    };
+    // *** FIM NOVO ***
+
     this.inicializar();
   }
 
-  /**
-   * Inicializa o gerenciador
-   */
+
   inicializar() {
     this.carregarDiagnosticos();
     this.renderizarDiagnosticos();
     this.inicializarEventos();
   }
 
-  /**
-   * Carrega os diagnósticos
-   */
+  // *** NOVO ***
+  getPlanoRefeicoesVazio() {
+    return {
+      breakfast: [],
+      lunch: [],
+      snack: [],
+      dinner: []
+    };
+  }
+  // *** FIM NOVO ***
+
   carregarDiagnosticos() {
     try {
       this.diagnosticosEnviados = JSON.parse(localStorage.getItem('diagnosticos_enviados')) || [];
@@ -40,9 +54,6 @@ class NutricionistaDiagnosticosManager {
     }
   }
 
-  /**
-   * Renderiza a lista de diagnósticos
-   */
   renderizarDiagnosticos() {
     const lista = document.getElementById('diagnosticos-lista');
     if (!lista) return;
@@ -54,7 +65,6 @@ class NutricionistaDiagnosticosManager {
 
     let diagnosticos = [...this.diagnosticosEnviados, ...this.diagnosticosAvaliados];
 
-    // Aplica filtro
     if (statusFiltro) {
       diagnosticos = diagnosticos.filter(d => d.status === statusFiltro);
     }
@@ -64,7 +74,6 @@ class NutricionistaDiagnosticosManager {
       return;
     }
 
-    // Ordena por data (mais recentes primeiro)
     diagnosticos.sort((a, b) => new Date(b.data_criacao) - new Date(a.data_criacao));
 
     diagnosticos.forEach(diagnostico => {
@@ -73,9 +82,7 @@ class NutricionistaDiagnosticosManager {
     });
   }
 
-  /**
-   * Cria card de diagnóstico
-   */
+
   criarCardDiagnostico(diagnostico) {
     const card = document.createElement('div');
     card.className = `diagnostico-card status-${diagnostico.status}`;
@@ -158,9 +165,6 @@ class NutricionistaDiagnosticosManager {
     return card;
   }
 
-  /**
-   * Obtém texto do status
-   */
   obterTextoStatus(status) {
     const statusMap = {
       'enviado_para_avaliacao': 'Pendente de Avaliação',
@@ -169,12 +173,17 @@ class NutricionistaDiagnosticosManager {
     return statusMap[status] || status;
   }
 
-  /**
-   * Abre modal com diagnóstico
-   */
   abrirModalDiagnostico(diagnostico) {
     this.diagnosticoAtual = diagnostico;
+    
+    // *** MODIFICADO ***
+    // Carrega os dados do paciente
     this.preencherModalComDados(diagnostico);
+    
+    // Carrega o plano de refeições (novo ou existente)
+    this.carregarPlanoRefeicoes(diagnostico);
+    
+    // *** FIM MODIFICADO ***
     
     const modal = document.getElementById('modal-diagnostico');
     if (modal) {
@@ -182,9 +191,6 @@ class NutricionistaDiagnosticosManager {
     }
   }
 
-  /**
-   * Preenche modal com dados
-   */
   preencherModalComDados(diagnostico) {
     const d = diagnostico.informacoes_saude;
     const h = diagnostico.historico_medico;
@@ -223,8 +229,8 @@ class NutricionistaDiagnosticosManager {
     // Objetivo
     this.atualizarElemento('modal-objetivoPrincipal', diagnostico.objetivo_principal || 'Não informado');
 
-    // Preenche formulário de prescrição
-    this.preencherFormularioPrescricao(diagnostico);
+    // ESTA FUNÇÃO NÃO PREENCHE MAIS O FORMULÁRIO DE PRESCRIÇÃO
+    // this.preencherFormularioPrescricao(diagnostico);
   }
 
   /**
@@ -238,27 +244,139 @@ class NutricionistaDiagnosticosManager {
   }
 
   /**
-   * Preenche formulário de prescrição
+   * *** REMOVIDA/SUBSTITUÍDA ***
+   * Preenche formulário de prescrição (lógica movida para carregarPlanoRefeicoes)
    */
-  preencherFormularioPrescricao(diagnostico) {
-    if (diagnostico.prescricao_calorias) {
-      const prescricaoCalorias = document.getElementById('prescricao-calorias');
-      const prescricaoCarboidratos = document.getElementById('prescricao-carboidratos');
-      const prescricaoProteinas = document.getElementById('prescricao-proteinas');
-      const prescricaoGorduras = document.getElementById('prescricao-gorduras');
-      const prescricaoObservacoes = document.getElementById('prescricao-observacoes');
+  // preencherFormularioPrescricao(diagnostico) { ... }
 
-      if (prescricaoCalorias) prescricaoCalorias.value = diagnostico.prescricao_calorias;
-      if (prescricaoCarboidratos) prescricaoCarboidratos.value = diagnostico.macronutrientes_recomendados.carboidratos_percentual || '';
-      if (prescricaoProteinas) prescricaoProteinas.value = diagnostico.macronutrientes_recomendados.proteinas_percentual || '';
-      if (prescricaoGorduras) prescricaoGorduras.value = diagnostico.macronutrientes_recomendados.gorduras_percentual || '';
-      if (prescricaoObservacoes) prescricaoObservacoes.value = diagnostico.observacoes_nutricionista || '';
+
+  // *** NOVAS FUNÇÕES PARA O PLANO DE REFEIÇÕES ***
+
+  /**
+   * Carrega o plano de refeições existente ou um novo
+   */
+  carregarPlanoRefeicoes(diagnostico) {
+    if (diagnostico.plano_refeicoes) {
+      // Se já existe um plano, carrega
+      // O 'parse/stringify' clona o objeto para evitar mutação do original
+      this.planoRefeicoesAtual = JSON.parse(JSON.stringify(diagnostico.plano_refeicoes));
+    } else {
+      // Se não, inicia um vazio
+      this.planoRefeicoesAtual = this.getPlanoRefeicoesVazio();
     }
+    
+    // Seleciona a primeira aba por padrão
+    this.selecionarAbaRefeicao('breakfast');
   }
 
   /**
-   * Inicializa eventos
+   * Troca a aba de refeição (Café, Almoço, etc.)
    */
+  selecionarAbaRefeicao(mealType) {
+    this.abaRefeicaoAtual = mealType;
+    
+    // Atualiza título do form
+    const tituloForm = document.getElementById('form-prato-titulo');
+    if (tituloForm) {
+      tituloForm.textContent = `Adicionar Prato para ${this.mapaNomesRefeicoes[mealType]}`;
+    }
+
+    // Atualiza estilo 'active' das abas
+    document.querySelectorAll('#meal-tabs .tab-link').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    const abaAtiva = document.querySelector(`#meal-tabs .tab-link[onclick*="'${mealType}'"]`);
+    if (abaAtiva) {
+      abaAtiva.classList.add('active');
+    }
+
+    // Renderiza os pratos da aba selecionada
+    this.renderizarPratosRefeicao();
+  }
+
+  /**
+   * Mostra os pratos cadastrados para a refeição atual
+   */
+  renderizarPratosRefeicao() {
+    const listaContainer = document.getElementById('lista-pratos-cadastrados');
+    if (!listaContainer) return;
+
+    listaContainer.innerHTML = ''; // Limpa a lista
+    
+    const pratos = this.planoRefeicoesAtual[this.abaRefeicaoAtual];
+
+    if (!pratos || pratos.length === 0) {
+      listaContainer.innerHTML = '<p style="text-align: center; color: #777; padding: 10px 0;">Nenhum prato cadastrado.</p>';
+      return;
+    }
+
+    pratos.forEach((prato, index) => {
+      const cardPrato = document.createElement('div');
+      cardPrato.className = 'dish-card';
+      cardPrato.innerHTML = `
+        <div class="dish-card-header">
+          <h5>${prato.nome || 'Prato sem nome'}</h5>
+          <button type="button" class="btn-remover-prato" onclick="window.nutricionistaDiagnosticosManager.removerPrato(${index})">&times;</button>
+        </div>
+        <div class="dish-card-macros">
+          <span><strong>${prato.kcal || 0}</strong> kcal</span>
+          <span><strong>C:</strong> ${prato.carb || 0}g</span>
+          <span><strong>P:</strong> ${prato.prot || 0}g</span>
+          <span><strong>G:</strong> ${prato.gord || 0}g</span>
+        </div>
+        <p class="dish-card-obs">${prato.obs || 'Sem observações.'}</p>
+      `;
+      listaContainer.appendChild(cardPrato);
+    });
+  }
+
+  /**
+   * Adiciona um novo prato ao plano
+   */
+  adicionarPrato() {
+    const nome = document.getElementById('prato-nome').value;
+    const kcal = parseFloat(document.getElementById('prato-kcal').value) || 0;
+    const carb = parseFloat(document.getElementById('prato-carb').value) || 0;
+    const prot = parseFloat(document.getElementById('prato-prot').value) || 0;
+    const gord = parseFloat(document.getElementById('prato-gord').value) || 0;
+    const obs = document.getElementById('prato-obs').value;
+
+    if (!nome || kcal <= 0) {
+      this.mostrarNotificacao('O nome do prato e as calorias (maior que 0) são obrigatórios.', 'erro');
+      return;
+    }
+
+    const novoPrato = { nome, kcal, carb, prot, gord, obs };
+    
+    // Adiciona ao array da refeição atual
+    this.planoRefeicoesAtual[this.abaRefeicaoAtual].push(novoPrato);
+
+    // Limpa o formulário
+    document.getElementById('prato-nome').value = '';
+    document.getElementById('prato-kcal').value = '';
+    document.getElementById('prato-carb').value = '';
+    document.getElementById('prato-prot').value = '';
+    document.getElementById('prato-gord').value = '';
+    document.getElementById('prato-obs').value = '';
+    
+    // Atualiza a lista
+    this.renderizarPratosRefeicao();
+  }
+
+  /**
+   * Remove um prato do plano
+   */
+  removerPrato(index) {
+    if (confirm('Tem certeza que deseja remover este prato?')) {
+      this.planoRefeicoesAtual[this.abaRefeicaoAtual].splice(index, 1);
+      this.renderizarPratosRefeicao(); // Atualiza a lista
+    }
+  }
+
+
+  // *** FIM DAS NOVAS FUNÇÕES ***
+
+
   inicializarEventos() {
     const filtroStatus = document.getElementById('filtro-status');
     if (filtroStatus) {
@@ -277,8 +395,19 @@ class NutricionistaDiagnosticosManager {
 
     const formPrescricao = document.getElementById('form-prescricao');
     if (formPrescricao) {
-      formPrescricao.addEventListener('submit', (e) => this.handleSubmitPrescricao(e));
+      // *** MODIFICADO ***
+      // O submit agora é para salvar o PLANO
+      formPrescricao.addEventListener('submit', (e) => this.handleSubmitPlanoRefeicoes(e));
     }
+    
+    // *** NOVO ***
+    // Evento para o botão de ADICIONAR PRATO
+    const btnAddPrato = document.getElementById('btn-add-prato');
+    if (btnAddPrato) {
+      btnAddPrato.addEventListener('click', () => this.adicionarPrato());
+    }
+    // *** FIM NOVO ***
+
 
     const modal = document.getElementById('modal-diagnostico');
     if (modal) {
@@ -289,9 +418,10 @@ class NutricionistaDiagnosticosManager {
   }
 
   /**
-   * Trata submit da prescrição
+   * *** RENOMEADA E MODIFICADA ***
+   * (Antiga handleSubmitPrescricao)
    */
-  handleSubmitPrescricao(event) {
+  handleSubmitPlanoRefeicoes(event) {
     event.preventDefault();
 
     if (!this.diagnosticoAtual) {
@@ -299,43 +429,45 @@ class NutricionistaDiagnosticosManager {
       return;
     }
 
-    const formData = new FormData(event.target);
-    
-    const prescricao = {
-      prescricao_calorias: parseFloat(formData.get('prescricao_calorias')) || 0,
-      macronutrientes_recomendados: {
-        carboidratos_percentual: parseFloat(formData.get('carboidratos_percentual')) || 0,
-        proteinas_percentual: parseFloat(formData.get('proteinas_percentual')) || 0,
-        gorduras_percentual: parseFloat(formData.get('gorduras_percentual')) || 0
-      },
-      observacoes_nutricionista: formData.get('observacoes_nutricionista') || ''
-    };
-
-    if (!this.validarPrescricao(prescricao)) {
-      return;
+    // *** NOVO ***
+    // Valida o plano de refeições
+    if (!this.validarPlanoRefeicoes(this.planoRefeicoesAtual)) {
+      return; // A notificação de erro já foi mostrada na validação
     }
+    // *** FIM NOVO ***
 
-    this.atualizarDiagnosticoComPrescricao(prescricao);
+    // A variável 'prescricao' agora é o nosso plano de refeições
+    const planoRefeicoes = this.planoRefeicoesAtual;
+
+    this.atualizarDiagnosticoComPlano(planoRefeicoes);
     this.fecharModal();
-    this.mostrarNotificacao('Diagnóstico avaliado e salvo com sucesso!', 'sucesso');
+    this.mostrarNotificacao('Plano de refeições salvo com sucesso!', 'sucesso');
     this.renderizarDiagnosticos();
   }
 
   /**
-   * Valida prescrição
+   * *** RENOMEADA E MODIFICADA ***
+   * (Antiga validarPrescricao)
    */
-  validarPrescricao(prescricao) {
-    const { prescricao_calorias, macronutrientes_recomendados } = prescricao;
-    const { carboidratos_percentual, proteinas_percentual, gorduras_percentual } = macronutrientes_recomendados;
+  validarPlanoRefeicoes(plano) {
+    
+    const { breakfast, lunch, snack, dinner } = plano;
 
-    if (prescricao_calorias <= 0) {
-      this.mostrarNotificacao('As calorias devem ser um valor positivo.', 'erro');
+    // Verifica se CADA refeição tem pelo menos 3 pratos
+    if (breakfast.length < 3) {
+      this.mostrarNotificacao('É preciso cadastrar no mínimo 3 pratos para o Café da Manhã.', 'erro');
       return false;
     }
-
-    const somaPercentuais = carboidratos_percentual + proteinas_percentual + gorduras_percentual;
-    if (Math.abs(somaPercentuais - 100) > 0.1) {
-      this.mostrarNotificacao(`A soma dos percentuais de macronutrientes deve ser 100%, mas é ${somaPercentuais.toFixed(2)}%.`, 'erro');
+    if (lunch.length < 3) {
+      this.mostrarNotificacao('É preciso cadastrar no mínimo 3 pratos para o Almoço.', 'erro');
+      return false;
+    }
+    if (snack.length < 3) {
+      this.mostrarNotificacao('É preciso cadastrar no mínimo 3 pratos para o Café da Tarde.', 'erro');
+      return false;
+    }
+    if (dinner.length < 3) {
+      this.mostrarNotificacao('É preciso cadastrar no mínimo 3 pratos para o Jantar.', 'erro');
       return false;
     }
 
@@ -343,13 +475,23 @@ class NutricionistaDiagnosticosManager {
   }
 
   /**
-   * Atualiza diagnóstico com prescrição
+   * *** RENOMEADA E MODIFICADA ***
+   * (Antiga atualizarDiagnosticoComPrescricao)
    */
-  atualizarDiagnosticoComPrescricao(prescricao) {
+  atualizarDiagnosticoComPlano(plano) {
     this.diagnosticoAtual.status = 'avaliado';
-    this.diagnosticoAtual.prescricao_calorias = prescricao.prescricao_calorias;
-    this.diagnosticoAtual.macronutrientes_recomendados = prescricao.macronutrientes_recomendados;
-    this.diagnosticoAtual.observacoes_nutricionista = prescricao.observacoes_nutricionista;
+    
+    // *** NOVO ***
+    // Adiciona o plano de refeições ao diagnóstico
+    this.diagnosticoAtual.plano_refeicoes = plano;
+    
+    // *** REMOVIDO ***
+    // Remove os campos antigos
+    delete this.diagnosticoAtual.prescricao_calorias;
+    delete this.diagnosticoAtual.macronutrientes_recomendados;
+    delete this.diagnosticoAtual.observacoes_nutricionista;
+    // *** FIM REMOVIDO ***
+
     this.diagnosticoAtual.data_avaliacao = new Date().toISOString();
     this.diagnosticoAtual.nutricionista_id = this.nutricionistaAtual.id;
     this.diagnosticoAtual.nutricionista_nome = this.nutricionistaAtual.nome;
@@ -388,6 +530,12 @@ class NutricionistaDiagnosticosManager {
       modal.style.display = 'none';
     }
     this.diagnosticoAtual = null;
+    
+    // *** NOVO ***
+    // Reseta o plano de refeições e a aba ao fechar
+    this.planoRefeicoesAtual = this.getPlanoRefeicoesVazio();
+    this.abaRefeicaoAtual = 'breakfast';
+    // *** FIM NOVO ***
   }
 
   /**

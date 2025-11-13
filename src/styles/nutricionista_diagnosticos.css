@@ -1,4 +1,4 @@
- @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
     margin: 0;
@@ -214,7 +214,9 @@ p {
   background-color: #384420;
   margin: auto; 
   padding: 20px;
-  width: 50%;
+  width: 70%; /* Aumentado para comportar o novo form */
+  max-height: 90vh; /* Adicionado max-height */
+  overflow-y: auto; /* Adicionado scroll se o conteúdo passar */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);;
 }
@@ -291,10 +293,8 @@ p {
 
 /* grid de duas colunas principais: esquerda (inputs), direita (textarea) */
 #form-prescricao {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px 40px;
-  align-items: start;
+  /* Este ID agora é só para os botões de ação */
+  margin-top: 20px;
 }
 
 .macros-grid {
@@ -337,7 +337,7 @@ input {
 
 
 .form-actions {
-  grid-column: 1 / 3;
+  /* grid-column: 1 / 3; */ /* Não mais necessário no grid */
   display: flex;
   gap: 10px;
   margin-right: 12px;
@@ -375,4 +375,158 @@ input {
 
 .btn-primary:hover {
   background-color: #055a00;
+}
+
+
+/* *** NOVOS ESTILOS PARA O PLANO DE REFEIÇÕES ***
+*/
+
+.meal-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 2px solid #ccd1cb;
+  margin-bottom: 15px;
+}
+
+.tab-link {
+  padding: 10px 15px;
+  border: none;
+  background-color: #ccd1cb;
+  color: #323232;
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-link:hover {
+  background-color: #b6c7b2;
+}
+
+.tab-link.active {
+  background-color: #384420;
+  color: white;
+}
+
+#form-add-prato {
+  background-color: #e8e8e8;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+#form-prato-titulo {
+  font-size: 18px;
+  font-weight: 600;
+  color: #384420;
+  margin-bottom: 12px;
+}
+
+.form-add-prato-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Nome/Obs maiores, números menores */
+  gap: 10px;
+}
+
+/* Estiliza os inputs com classes novas para não conflitar */
+.form-input-prato, .form-input-prato-num {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #b6c7b2;
+  border-radius: 8px; /* Menor que o input original */
+  font-size: 14px;
+}
+
+.form-input-prato {
+  grid-column: 1 / 3; /* Nome e Obs ocupam 2 colunas */
+}
+.form-input-prato-num {
+  grid-column: span 1; /* Inputs numéricos */
+}
+
+
+.btn-add-prato {
+  background-color: #2196f3; /* Um azul para diferenciar */
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-add-prato:hover {
+  background-color: #0b7dda;
+}
+
+
+#lista-pratos-cadastrados {
+  margin-top: 20px;
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 5px; /* Espaço para scrollbar */
+}
+
+.dish-card {
+  background-color: #f1f1f1;
+  border: 1px solid #ccd1cb;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.dish-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.dish-card-header h5 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #323232;
+}
+
+.btn-remover-prato {
+  background-color: #e53935; /* Vermelho */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  line-height: 24px; /* Centraliza o 'X' */
+  text-align: center;
+}
+
+.btn-remover-prato:hover {
+  background-color: #c62828;
+}
+
+.dish-card-macros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.dish-card-macros span {
+  font-weight: 500;
+}
+
+.dish-card-obs {
+  font-size: 13px;
+  color: #777;
+  font-style: italic;
 }
