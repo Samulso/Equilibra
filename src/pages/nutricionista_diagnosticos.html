@@ -5,10 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diagnósticos - Nutricionista</title>
-    <!-- Caminho do CSS mantido como no seu original -->
     <link rel="stylesheet" href="../styles/nutricionista_diagnosticos.css">
-    
-    <!-- Caminhos dos JS mantidos como no seu original -->
     <script src="../js/auth.js"></script>
     <script src="../js/all.js"></script>
 </head>
@@ -30,11 +27,10 @@
             </div>
 
             <div id="diagnosticos-lista" class="diagnosticos-lista">
-                <!-- Os diagnósticos serão carregados aqui dinamicamente -->
+
             </div>
         </section>
 
-        <!-- Modal para visualizar e avaliar diagnóstico -->
         <div id="modal-diagnostico" class="modal-diagnostico">
             <div class="modal-content">
                 <div class="modal-header">
@@ -146,16 +142,10 @@
                             </div>
                         </section>
                     </div>
-                    
 
-                    <!-- 
-                        *** NOVA SEÇÃO DE PLANO DE REFEIÇÕES ***
-                        Substitui o <section class="prescricao-section"> antigo
-                    -->
                     <section class="prescricao-section" id="plano-refeicoes-section">
                         <h3>Plano de Refeições</h3>
-                        
-                        <!-- Abas para as refeições -->
+
                         <div classs="meal-tabs" id="meal-tabs">
                             <button class="tab-link active" onclick="window.nutricionistaDiagnosticosManager.selecionarAbaRefeicao('breakfast')">Café da Manhã</button>
                             <button class="tab-link" onclick="window.nutricionistaDiagnosticosManager.selecionarAbaRefeicao('lunch')">Almoço</button>
@@ -163,11 +153,13 @@
                             <button class="tab-link" onclick="window.nutricionistaDiagnosticosManager.selecionarAbaRefeicao('dinner')">Jantar</button>
                         </div>
 
-                        <!-- Formulário para adicionar prato -->
                         <div id="form-add-prato">
                             <h4 id="form-prato-titulo">Adicionar Prato para Café da Manhã</h4>
                             <div class="form-add-prato-grid">
-                                <input type="text" id="prato-nome" placeholder="Nome do Prato (Ex: Pão com ovo)" class="form-input-prato">
+                                
+                                
+                                <input type="text" id="prato-nome" placeholder="Nome do Prato (Ex: Pão com ovo)" >
+                                <textarea name="" id="prato-desc" rows="1" class="form-input-prato" placeholder="Descrição do Prato (Ex: 2 fatias de Pão com 1 ovo)"></textarea>
                                 <input type="number" id="prato-kcal" placeholder="Kcal" class="form-input-prato-num">
                                 <input type="number" id="prato-carb" placeholder="Carb. (g)" class="form-input-prato-num">
                                 <input type="number" id="prato-prot" placeholder="Prot. (g)" class="form-input-prato-num">
@@ -177,18 +169,12 @@
                             <button type="button" id="btn-add-prato" class="btn btn-add-prato">Adicionar Prato</button>
                         </div>
 
-                        <!-- Lista de pratos adicionados -->
                         <div id="lista-pratos-cadastrados">
-                            <!-- Pratos adicionados para a refeição selecionada aparecerão aqui -->
+
                         </div>
 
-                        <!-- Ações do Formulário Principal -->
                         <form id="form-prescricao">
-                             <!-- 
-                                Este formulário agora serve apenas como um 'container' 
-                                para os botões de Cancelar e Salvar o plano de refeições.
-                                A lógica de submit foi movida para o JS.
-                            -->
+
                             <div class="form-actions">
                                 <button type="button" id="btn-cancelar-prescricao" class="btn btn-secondary">Cancelar</button>
                                 <button type="submit" id="btn-salvar-plano" class="btn btn-primary">Salvar Plano</button>

@@ -38,14 +38,13 @@ class NutricionistaPacientesManager {
         new Date(diagnostico.data_avaliacao) >
           new Date(pacientesUnicos.get(pacienteId).data_avaliacao)
       ) {
-        // *** MODIFICADO ***
-        // Armazena o plano de refeições em vez de calorias/macros antigos
+
         pacientesUnicos.set(pacienteId, {
           id: pacienteId,
           nome: diagnostico.paciente_nome || "Paciente",
           diagnostico: diagnostico,
           objetivo: diagnostico.objetivo_principal,
-          plano_refeicoes: diagnostico.plano_refeicoes, // Novo
+          plano_refeicoes: diagnostico.plano_refeicoes, 
         });
       }
     });
@@ -85,8 +84,6 @@ class NutricionistaPacientesManager {
     const li = document.createElement("li");
     li.className = "patients";
 
-    // *** MODIFICADO ***
-    // Troca a linha de "Prescrição" (kcal) por "Plano" (definido/pendente)
     li.innerHTML = `
                 <img class="perfil" src="../assets/img/avatar-default.png" alt="Foto de ${
                   paciente.nome
@@ -297,8 +294,7 @@ class NutricionistaPacientesManager {
             Pendente
           </span>`;
     
-    // *** NOVO ***
-    // Pega a observação do paciente
+
     const obsPaciente = refeicao.observacao_paciente;
     const obsPacienteHTML = obsPaciente ? `
       <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 10px; margin-top: 15px; margin-bottom: 10px; border-radius: 5px;">
@@ -306,7 +302,6 @@ class NutricionistaPacientesManager {
           <p style="color: #666; margin: 5px 0 0 0; font-style: italic;">"${obsPaciente}"</p>
       </div>
     ` : '';
-    // *** FIM NOVO ***
 
     div.innerHTML = `
         ${badgeStatus}
@@ -496,8 +491,7 @@ class NutricionistaPacientesManager {
   }
 
   salvarAvaliacao(refeicaoId) {
-    console.log(`💾 Salvando avaliação da refeição ${refeicaoId}...`);
-
+ 
     const card = document
       .querySelector(`[data-refeicao-id="${refeicaoId}"]`)
       .closest(".refeicao-card");
@@ -541,8 +535,6 @@ class NutricionistaPacientesManager {
     const paciente = this.meusPacientes.find((p) => p.id === pacienteId);
     if (!paciente) return;
 
-    // *** MODIFICADO ***
-    // Remove a prescrição de kcal e macros, pois agora é um plano complexo
     alert(`
             Detalhes do paciente
         Nome: ${paciente.nome}
